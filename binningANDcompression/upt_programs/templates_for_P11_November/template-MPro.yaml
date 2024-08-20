@@ -1,0 +1,80 @@
+om:
+  parallelization_layer: mpi
+  parallelization_engine: MpiProcessingCollectingEngine
+  data_retrieval_layer: data_handlers_filesystem
+  data_event_handler: Eiger16MFilesDataEventHandler
+  processing_layer: cheetah
+  monitor: Cheetah
+
+data_retrieval_layer:
+  calibration: false
+  binning: false
+  fallback_detector_distance_in_mm: 200
+  fallback_beam_energy_in_eV: 20000
+  required_data:
+    - "detector_data"
+    - "beam_energy"
+    - "detector_distance"
+    - "timestamp"
+    - "event_id"
+    - "frame_id"
+
+cheetah:
+  processed_directory: .
+  processed_filename_prefix: "RUN_data"
+  processed_filename_extension: "h5"
+  write_class_sums: true
+  class_sums_update_interval: 5
+  class_sums_sending_interval: 30
+  status_file_update_interval: 100
+  class_sum_filename_prefix: "RUN"
+  hdf5_file_data_type: "uint16"
+  hdf5_file_compression: "gzip"
+  hdf5_file_compression_opts: 6
+  hdf5_file_compression_shuffle: true
+  hdf5_file_max_num_peaks: 1024
+  hdf5_fields:
+    detector_data: "/entry/data/data"
+    event_id: "/entry/event_id"
+    #beam_energy: "/LCLS/photon_energy_eV"
+    #detector_distance: "/LCLS/detector_1/EncoderValue"
+    #timestamp: "/LCLS/timestamp"
+    peak_list: "/entry_1/result_1"
+    pixel_size: "/entry_1/instrument_1/detector_1/x_pixel_size"
+
+
+crystallography:
+  num_frames_in_ev¼ent_to_process: 1
+  broadcast_ip: null
+  broadcast_port: null
+  geometry_file: /asap3/petra3/gpfs/p11/2020/data/11010575/scratch_cc/galchenm/eiger16M-P11_200mm.geom
+  max_saturated_peaks: 5000
+  min_num_peaks_for_hit: 15
+  max_num_peaks_for_hit: 5000
+  saturation_value: 500000
+  running_average_window_size: 200
+  geometry_is_optimized: true
+  speed_report_interval: 10
+  hit_frame_sending_interval: 5
+  non_hit_frame_sending_interval: null
+  data_broadcast_interval: 4
+
+correction:
+  filename: null
+  hdf5_path: null
+
+peakfinder8_peak_detection:
+  detector_type: eiger16M
+  max_num_peaks: 5500
+  adc_threshold: 20.0
+  minimum_snr: 5.0
+  min_pixel_count: 2
+  max_pixel_count: 50
+  local_bg_radius: 3
+  bad_pixel_map_filename: /asap3/petra3/gpfs/p11/2020/data/11010575/processed/indexing/mask_v1.h5
+  bad_pixel_map_hdf5_path: /data/data
+  min_res: 20
+  max_res: 1200
+
+data_accumulator:
+  num_events_to_accumulate: 5

@@ -1,0 +1,4 @@
+nohup python3 ../stream_split.py -i all_runs.stream -o p8snr6_check_peaks.stream -f r0096
+ nohup python3 ../peakogram-stream -i p8snr6_check_peaks.stream -o p8snr6_check_peaks.png
+source ../partial_MG.bash ./p8snr6_check_peaks.stream
+source /gpfs/cfel/cxi/scratch/data/2020/EXFEL-2019-Schmidt-Mar-p002450/scratch/galchenm/data_processing/Phenix_files/lyz/phenix_run.sh p8snr6_check_peaks.hkl

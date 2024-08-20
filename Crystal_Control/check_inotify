@@ -1,0 +1,70 @@
+import os
+from inotify_simple import INotify, flags
+
+path = '/gpfs/cfel/group/cxi/scratch/data/2020/EXFEL-2019-Schmidt-Mar-p002450/scratch/galchenm/scripts_for_work/Crystal_Control/test'
+
+inotify = INotify()
+watch_flags = flags.CLOSE_WRITE | flags.IGNORED
+
+wd = inotify.add_watch(path, watch_flags)
+
+for event in inotify.read():
+    print(event)
+    for flag in flags.from_mask(event.mask):
+        print('    ' + str(flag))
+
+import time
+max_time = 10
+flag = 1
+while True:
+	time0 = time.perf_counter()
+    for event in inotify.read():
+        print(event.name, flags.CLOSE_WRITE in flags.from_mask(event.mask))
+        print('1')
+		if (time.perf_counter()-time0) > max_time:
+			flag = 0
+			continue
+    print('2')
+	if (flag == 0):
+		break
+
+while True:
+    for event in inotify.read():
+        print(event.name)
+        for flag in flags.from_mask(event.mask):
+            print('    ' + str(flag), flag is flags.CLOSE_WRITE, flag is flags.IGNORED)
+            if flag is flags.IGNORED:
+                print('go out')
+                break
+				
+list_of_files = []
+prev_len_of_list_of_files = 0
+while True:
+	for event in inotify.read():
+		print(event.name, flags.from_mask(event.mask))
+		for flag in flags.from_mask(event.mask):
+			print('    ' + str(flag), flag is flags.IGNORED)
+			if flag is flags.CLOSE_WRITE and event.name not in list_of_files:
+				#run pf8
+				prev_len_of_list_of_files = len(list_of_files)
+				list_of_files.append(event.name)
+				
+				print(prev_len_of_list_of_files)
+				pass
+		print('here')
+	if len(list_of_files) == prev_len_of_list_of_files:
+		print('go out')
+		break
+
+import os
+path = '/gpfs/cfel/group/cxi/scratch/data/2020/EXFEL-2019-Schmidt-Mar-p002450/scratch/galchenm/scripts_for_work/Crystal_Control/test'
+n=0
+for i in range(20):
+    import time
+    time.sleep(2.4)
+    f = open(f'{path}/{i}.txt','w')
+    for j in range(i+1):
+        f.write(f'{j}\n')
+    f.close()
+    n+=1
+    print(n)

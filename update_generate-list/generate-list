@@ -1,0 +1,37 @@
+#!/usr/bin/perl -w
+
+use strict;
+
+open(FH, $ARGV[0]);
+
+my $line;
+my $filename;
+my $event = "";
+
+while ( $line = <FH> ) {
+
+	if ( $line =~ /^-----\ Begin chunk\ -----$/ ) {
+		$event = "";
+	}
+
+	if ( $line =~ /^Image\ filename: (.*)$/ ) {
+		$filename = $1;
+	}
+
+	if ( $line =~ /^Event: (.*)$/ ) {
+		$event = $1;
+	}
+
+	if ( $line =~ /^-----\ End chunk\ -----$/ ) {
+		if ( 1 ) {
+			printf("%s", $filename);
+			if ( $event ) {
+				printf(" %s", $event);
+			}
+			printf(" %s\n","3fs"); 
+		}
+	}
+
+
+}
+close(FH);

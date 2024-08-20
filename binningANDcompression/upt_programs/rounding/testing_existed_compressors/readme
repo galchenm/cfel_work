@@ -1,0 +1,34 @@
+AGIPD (/gpfs/exfel/u/scratch/SPB/202002/p002442/galchenm/processed/blocks/dataReduction/r0043-gv_snr5_dark47/EuXFEL-S00014-r0043-c00.cxi)
+-raw +
+path = /entry_1/instrument_1/detector_1/detector_corrected/data
+type = int
+
+-raw-float +
+path = /entry_1/instrument_1/detector_1/dataFloat 
+type = float
+
+-reducted +
+path = /d512lim32k
+type = int; increasing step, N = 9 (512), with layers, lim_up = 32k
+______________________________________________________________
+Eiger16M (/asap3/petra3/gpfs/p11/2020/data/11010575/scratch_cc/galchenm/newApproachDataCompression/3011_120/3011_120_data_25.h5)
+-raw
+path = /entry/data/data
+type = int
+
+-reducted-wo-layers
+path = /dataN0wo
+type = int; increasing step, N=0 (1), wo layers 
+
+-reducted-with-layers
+path = /dataN0withLAYERS
+type = int; increasing step, N=0 (1), with layers 
+______________________________________________________________
+CS-PAD (/gpfs/cfel/cxi/scratch/data/2019/LCLS-2011-Boutet-Feb-L220/galchenm/r0134-138/cxi22010-r0135-c00.cxi)
+-raw
+path = /entry_1/data_1/data
+type =
+
+-reducted 
+path = /dataNew
+type = int; increasing step, N=5 (32), wo layers

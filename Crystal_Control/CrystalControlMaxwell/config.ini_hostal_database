@@ -1,0 +1,143 @@
+[Beam]
+beampositionx = 0.0
+beampositiony = 0.0
+beamwidth = 0.0
+beamheight = 0.0
+directbeamtransmission = 1e-8
+originx = 2121
+originy = 2187
+
+[Beamstop]
+positiony = -136
+positionz = -135
+beamstopmanualmountposition = 69000
+beamstopinposition = 27000
+
+[Beamtime]
+commissioning = 0
+fallback = 0
+
+[Amarcord]
+enabled = 0
+host = cfeld-vm05.desy.de
+database = hostal
+user = hostaluser
+password = Cryst@l_lodg3
+
+[Fluorescence]
+file = /gpfs/local/shared/Janus/bin/Xanes
+
+[Camera]
+host = haspp11camsrv, haspp11camsrv
+port = 8081, 8082
+offsetx = 0, -43
+offsety = 0, 116
+pixelsperum = 2.96, 0.884
+flipx = 0, 0
+flipy = 1, 0
+
+[Collimator]
+collimatorinpositiony = 158
+collimatorinpositionz = 13132
+collimatoroutpositiony = 324
+collimatoroutpositionz = -14300
+
+[Crystallography]
+sampleoutdistancewhenbeamcheck = 500
+goniospeed = 120
+manualmountposition = 1200
+backlightonoffport = p11/dac/eh.02
+contrastscreeninoutport = p11/register/eh.o.3.05
+flexurexserver = p11/piezomotor/eh.4.02
+flexureyserver = p11/piezomotor/eh.4.01
+pinholeyserver = p11/piezomotor/eh.4.03
+pinholezserver = p11/piezomotor/eh.4.04
+collimatoryserver = p11/piezomotor/eh.4.05
+collimatorzserver = p11/piezomotor/eh.4.06
+screenxserver = p11/piezomotor/eh.4.07
+screenzserver = p11/piezomotor/eh.4.08
+beamstopyserver = p11/piezomotor/eh.4.09
+beamstopzserver = p11/piezomotor/eh.4.10
+beamstopxserver = p11/motor/eh.3.09
+cryoretractor = p11/register/eh.o.3.02
+cryoshutter = p11/annealer/eh.01
+cryoserver = p11/cryo/eh.01
+detectortowerserver = p11/detectortower/1
+evaltangoserver = p11/evalserver/01
+goniometerserver = p11/servomotor/eh.1.01
+illuminationserver = p11/dac/eh.01
+inlineilluminationserver = p11/dac/eh.03
+inlineirisserver = p11/motor/eh.3.07
+inlinespotserver = p11/motor/eh.3.06
+kohzugoniometerxserver = p11/motor/eh.3.10
+kohzugoniometeryserver = p11/motor/eh.3.12
+kohzugoniometerzserver = p11/motor/eh.3.14
+kohzumicroscopeyserver = p11/motor/eh.3.15
+kohzumicroscopezserver = p11/motor/eh.3.16
+monochromator = p11/dcmener/oh.01
+eigerserver = p11/simplon_detector/eh.01
+eigerfilewriter = p11/simplon_filewriter/eh.01
+eigermonitor = p11/simplon_monitor/eh.01
+robotserver = p11/robot/eh.01
+shutterserver = p11/register/eh.o.1.01
+shutterstatus = p11/shutter/fs
+tangohost = haspp11oh
+tangoport = 10000
+vortexinoutport = p11/register/eh.o.3.03
+bs0status = hasylab/piconditions/bs11_0_geschlossen
+bs1status = hasylab/piconditions/bs11_1_geschlossen
+filterserver = p11/filter/eh.01
+energyserver = p11/energy/1
+startinserialcrystallographymode = 0
+
+[DetectorTower]
+linearizationk = 1
+linearizationm = 0
+
+[KohzuPositions]
+nominalgoniometerx = -3375
+nominalgoniometery = 39208
+nominalgoniometerz = 16354
+nominalmicroscopey = 5035
+nominalmicroscopez = 19180
+serialcrystyagingoniometerz = 25000
+
+[Photonmeter]
+amplifiergain = 3
+devpathmono = p11/dcmener/oh.01
+devpathtimer = p11/dgg2/pp.02
+sampletime = 1.0
+thickness = 200
+mod = 1
+devpathadc = p11/adc/eh.01
+devpathvfc = p11/vfc/pp2.01
+
+[Pinholes]
+pinholezminimumheight = -1154
+pinholesizelist = 0,200,100,50,20
+pinholeyposlist = -235,-482,-391,-387,-379
+pinholezposlist = -13982,13549,10296,6984,3762
+
+[Screen]
+diodeinpositionx = -50
+diodeinpositionz = 13500
+yaginpositionx = -50
+yaginpositionz = 9100
+screenoutpositionx = -50
+screenoutpositionz = -14500
+
+[Simulation]
+detectortower = 0
+goniometer = 0
+illumination = 0
+monochromator = 0
+petra = 0
+piezomotors = 0
+eiger = 0
+robot = 0
+shutter = 0
+flux = 0
+energy = 0
+cryo = 0
+camera = 0
+

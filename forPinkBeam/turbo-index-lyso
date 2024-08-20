@@ -1,0 +1,108 @@
+#!/bin/sh
+
+# Split a large indexing job into many small tasks and submit using SLURM
+
+# ./turbo-index my-files.lst label my.geom /location/for/streams
+
+# Copyright © 2016-2017 Deutsches Elektronen-Synchrotron DESY,
+#                       a research centre of the Helmholtz Association.
+#
+# Authors:
+#   2016      Steve Aplin <steve.aplin@desy.de>
+#   2016-2017 Thomas White <taw@physics.org>
+
+SPLIT=100  # Size of job chunks
+#MAIL=yaroslav.gevorkov@desy.de
+
+INPUT=$1
+RUN=Ind_`basename $INPUT | cut -d"." -f 1`
+GEOM=/gpfs/cfel/group/cxi/scratch/data/2021/ESRF-2021-Meents-Oct-ID09/calib/JF_Oct2021_70mm_6mm-shift-2.geom
+STREAMDIR=streams
+
+CELLFILE=/gpfs/cfel/user/atolstik/id09_Oct2021/index/lyso.cell
+
+TEMPDIR=tmp
+
+FINAL_DIST=`echo $INPUT |sed -e "s/.lst//"`
+echo $FINAL_DIST
+
+cd $FINAL_DIST/$TEMPDIR
+NJOBS=100
+
+# Set up environment here if necessary
+
+# Generate event list from file above
+list_events -i $INPUT -g $GEOM -o $FINAL_DIST/$TEMPDIR/events-${RUN}.lst
+#if [ $? != 0 ]; then
+#       echo "list_events failed"
+#       exit 1
+#fi
+# If you are using single-event files instead of multi-event ("CXI") ones,
+# comment out the above lines and uncomment the following one:
+# cp ../$INPUT events-${RUN}.lst
+
+# Count total number of events
+wc -l $FINAL_DIST/$TEMPDIR/events-${RUN}.lst
+
+# Split the events up, will create files with $SPLIT lines
+split -a 3 -d -l $SPLIT $FINAL_DIST/$TEMPDIR/events-${RUN}.lst $FINAL_DIST/$TEMPDIR/split-events-${RUN}.lst
+
+# Clean up
+rm -f $FINAL_DIST/$TEMPDIR/events-${RUN}.lst
+
+# Loop over the event list files, and submit a batch job for each of them
+for FILE in $FINAL_DIST/$TEMPDIR/split-events-${RUN}.lst*; do
+
+    # Stream file is the output of crystfel
+	TMPNAME=`basename $FILE `
+	echo $TMPNAME
+    STREAM=`echo $TMPNAME | sed -e "s/split-events-${RUN}.lst/${RUN}.stream/"`
+
+    # name
+    NAME=`echo $TMPNAME | sed -e "s/split-events-${RUN}.lst/${RUN}-/"`
+    # Job name
+    i=$(($(expr $(echo $NAME | grep -Eo '[0-9]+$') + 0)%$NJOBS))
+    JNAME=`echo $NAME | sed -e "s/${RUN}-.*/${RUN}-${i}/"`
+    		
+	# Job number
+    NUMBER=${NAME##$RUN-}
+    POS=`expr $NUMBER \* $SPLIT + 1`
+
+    echo "$JNAME (serial start $POS): $FILE  --->  $STREAM"
+
+    SLURMFILE="${NAME}.sh"
+
+    echo "#!/bin/sh" > $SLURMFILE
+    echo >> $SLURMFILE
+
+    echo "#SBATCH --partition=all" >> $SLURMFILE  # Set your partition here
+    echo "#SBATCH --time=12:00:00" >> $SLURMFILE
+    echo "#SBATCH --nodes=1" >> $SLURMFILE
+    echo >> $SLURMFILE
+
+    echo "#SBATCH --chdir   $PWD" >> $SLURMFILE
+    echo "#SBATCH --job-name  $JNAME" >> $SLURMFILE
+    echo "#SBATCH --output    $NAME-%N-%j.out" >> $SLURMFILE
+    echo "#SBATCH --error     $NAME-%N-%j.err" >> $SLURMFILE
+	echo "#SBATCH --nice=0" >> $SLURMFILE
+    #echo "#SBATCH --mail-type END" >> $SLURMFILE
+    #echo "#SBATCH --mail-user $MAIL" >> $SLURMFILE
+    echo >> $SLURMFILE
+
+	command="/gpfs/cfel/user/atolstik/aps_Feb2020/crystfel/build/indexamajig -i $FILE -g $GEOM -o $FINAL_DIST/$STREAMDIR/$STREAM -p $CELLFILE "
+    command="$command --peaks=cxi --hdf5-peaks=/data/peaks "
+    command="$command --min-peaks=25 "
+    command="$command --indexing=pinkIndexer --pinkIndexer-considered-peaks-count=4 --pinkIndexer-angle-resolution=4 --pinkIndexer-refinement-type=5 --pinkIndexer-tolerance=0.09 "
+	command="$command --pinkIndexer-multi"
+	command="$command --no-retry --no-refine --no-check-peaks --fix-profile-radius=0.002e9 "
+	command="$command --int-radius=4,5,7 --no-non-hits-in-stream --no-check-cell"
+	#command="$command --pinkIndexer-no-check-indexed"
+
+	command="$command --pinkIndexer-thread-count=20"
+	command="$command -j 4 --spectrum-file=/gpfs/cfel/user/atolstik/id09_Oct2021/index/tophat"
+
+    echo $command >> $SLURMFILE
+
+    sbatch $SLURMFILE
+
+done

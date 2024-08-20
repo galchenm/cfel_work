@@ -1,0 +1,10 @@
+CrystFEL unit cell file version 1.0
+
+lattice_type = triclinic
+centering = P
+a = 40.35 A
+b = 83.64 A
+c = 84.54 A
+al = 60.97 deg
+be = 89.19 deg
+ga = 89.39 deg

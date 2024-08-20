@@ -1,0 +1,16 @@
+source /gpfs/cfel/cxi/scratch/data/2020/EXFEL-2019-Schmidt-Mar-p002450/scratch/galchenm/data_processing/Phenix_files/lyz/phenix_run.sh r0096_basic_cal_wo_own_mask.hkl - done
+
+source /gpfs/cfel/cxi/scratch/data/2020/EXFEL-2019-Schmidt-Mar-p002450/scratch/galchenm/data_processing/Phenix_files/lyz/phenix_run.sh r0096_pc_ff_wo_own_mask.hkl - done
+
+source /gpfs/cfel/cxi/scratch/data/2020/EXFEL-2019-Schmidt-Mar-p002450/scratch/galchenm/data_processing/Phenix_files/lyz/phenix_run.sh r0096_pc_ff_blc-set-min_wo_own_mask.hkl - done
+
+
+
+source /gpfs/cfel/cxi/scratch/data/2020/EXFEL-2019-Schmidt-Mar-p002450/scratch/galchenm/data_processing/Phenix_files/lyz/phenix_run.sh r0096_basic_cal_masked.hkl - done
+
+
+
+
+source /gpfs/cfel/cxi/scratch/data/2020/EXFEL-2019-Schmidt-Mar-p002450/scratch/galchenm/data_processing/Phenix_files/lyz/phenix_run.sh r0096_pc_ff_masked.hkl - done
+
+source /gpfs/cfel/cxi/scratch/data/2020/EXFEL-2019-Schmidt-Mar-p002450/scratch/galchenm/data_processing/Phenix_files/lyz/phenix_run.sh r0096_pc_ff_blc-set-min_masked.hkl - done

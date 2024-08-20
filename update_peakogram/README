@@ -1,0 +1,2 @@
+module load anaconda3/5.2
+python /gpfs/cfel/cxi/scratch/data/2020/EXFEL-2019-Schmidt-Mar-p002450/scratch/galchenm/scripts_for_work/update_peakogram/peakogram-stream -i all_runs.stream -o proc1.svg

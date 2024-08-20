@@ -1,0 +1,32 @@
+1. Firstly, load the following modules:
+
+source /etc/profile.d/modules.sh
+module load phenix/1.18
+module load xray
+
+2. Then copy to your path (where *.hkl file is) where you are goig to run Phenix 6ftr.pdb and 6FTR.mtz, parameter_lys and refine_param_lys files.
+
+3. Make mtz format from hkl one my running create-mtz-422. Input for create-mtz-422 is *.hkl file.
+
+4. After that you can follow these commands, just put name_of_job, RES and BINS
+
+cp parameter_lys ./parameter_lys_${name_of_job}.eff
+sed -i "s/output_file = N/output_file = rfree_lys_${name_of_job}.mtz/g" parameter_lys_${name_of_job}.eff
+sed -i "s/file_name = M/file_name = all_runs_sph.mtz/g" parameter_lys_${name_of_job}.eff
+iotbx.reflection_file_editor parameter_lys_${name_of_job}.eff
+cp refine_param_lys ./refine_param_lys_${name_of_job}.eff
+sed -i "s/refine_NXC/refine_param_lys_${name_of_job}/g" refine_param_lys_${name_of_job}.eff
+phenix.refine rfree_lys_${name_of_job}.mtz 6ftr.pdb refine_param_lys_${name_of_job}.eff  xray_data.high_resolution=${RES} output.n_resolution_bins=${BINS} --unused_ok
+
+
+For instanse, how I did with Alireza's hkl file:
+
+cp parameter_lys ./parameter_lys_alireza_snr6_boarder2pix.eff
+sed -i "s/output_file = N/output_file = rfree_lys_alireza_snr6_boarder2pix.mtz/g" parameter_lys_alireza_snr6_boarder2pix.eff
+sed -i "s/file_name = M/file_name = experiment.mtz/g" parameter_lys_alireza_snr6_boarder2pix.eff
+iotbx.reflection_file_editor parameter_lys_alireza_snr6_boarder2pix.eff
+cp refine_param_lys ./refine_param_lys_alireza_snr6_boarder2pix.eff
+sed -i "s/refine_NXC/refine_param_lys_alireza_snr6_boarder2pix/g" refine_param_lys_alireza_snr6_boarder2pix.eff
+phenix.refine rfree_lys_alireza_snr6_boarder2pix.mtz 6ftr.pdb refine_param_lys_alireza_snr6_boarder2pix.eff  xray_data.high_resolution=1.65 output.n_resolution_bins=10 --unused_ok
+
+1*. Or you can run my script phenix_run.sh from the folder contains your hkl files and give the input parametes - INPUT_FOR_MTZ (*.hkl - for create-mtz-422), RES and BINS.

@@ -1,0 +1,11 @@
+CrystFEL unit cell file version 1.0
+
+lattice_type = monoclinic
+unique_axis = b
+centering = C
+a = 114.18 A
+b = 54.24 A
+c = 45.27 A
+al = 90.00 deg
+be = 101.96 deg
+ga = 90.00 deg

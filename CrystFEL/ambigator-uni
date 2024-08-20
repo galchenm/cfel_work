@@ -1,0 +1,61 @@
+#!/bin/sh
+
+source /etc/profile.d/modules.sh
+module load xray
+module load crystfel
+
+INPUT=$1
+stream=$(sed 's/.stream//g'<<<$(basename $INPUT))
+
+data=${stream}
+y=$2 #-3m1_H
+w=$3 #6/mmm
+
+HIGHRES=$4
+highres="--highres=${HIGHRES}" 
+
+LOWRES=$5
+lowres="--lowres=${LOWRES}" 
+
+NCORR=$6
+ncorr="--ncorr=${NCORR}"
+
+
+ambigator="ambigator"
+
+# Job name
+NAME=$data
+
+SLURMFILE="${NAME}.sh"
+
+echo "#!/bin/sh" > $SLURMFILE
+echo >> $SLURMFILE
+
+
+echo "#SBATCH --partition=upex" >> $SLURMFILE  # Set your partition here
+echo "#SBATCH --time=240:00:00" >> $SLURMFILE
+#    echo "#SBATCH --exclude=max-exfl109,max-exfl103" >> $SLURMFILE
+echo "#SBATCH --nodes=1" >> $SLURMFILE
+echo "#SBATCH --nice=100" >> $SLURMFILE
+echo "#SBATCH --mem=500000" >> $SLURMFILE
+echo "#SBATCH --cpu-freq=2600000" >> $SLURMFILE  # TO TEST !!!
+echo >> $SLURMFILE
+
+
+echo "#SBATCH --job-name  $NAME" >> $SLURMFILE
+echo "#SBATCH --output    $NAME-%N-%j.out" >> $SLURMFILE
+echo "#SBATCH --error     $NAME-%N-%j.err" >> $SLURMFILE
+echo >> $SLURMFILE
+
+echo "source /etc/profile.d/modules.sh" >> $SLURMFILE
+echo "module load xray" >> $SLURMFILE
+echo "module load crystfel" >> $SLURMFILE
+echo >> $SLURMFILE
+
+
+command="$ambigator $INPUT -o namb-${NAME}.stream -y $y -w $w -j 72 "$highres" "$lowres" "$ncorr""
+echo $command >> $SLURMFILE
+
+sbatch $SLURMFILE
+
+

@@ -1,0 +1,10 @@
+CrystFEL unit cell file version 1.0
+
+lattice_type = orthorhombic
+centering = P
+a = 51.93 A
+b = 62.77 A
+c = 71.44 A
+al = 90.00 deg
+be = 90.00 deg
+ga = 90.00 deg
